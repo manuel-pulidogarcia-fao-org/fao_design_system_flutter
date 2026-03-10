@@ -33,6 +33,7 @@ export 'src/components/content/fao_pre_loader.dart';
 export 'src/components/content/fao_tabs.dart';
 export 'src/components/content/fao_tag_list.dart';
 export 'src/components/content/fao_embed.dart';
+export 'src/components/content/fao_logo.dart';
 export 'src/components/layout/fao_content_background.dart';
 export 'src/components/layout/fao_content_block.dart';
 export 'src/components/navigation/fao_pagination.dart';
