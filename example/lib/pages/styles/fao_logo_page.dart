@@ -11,6 +11,11 @@ class FaoLogoPage extends StatefulWidget {
 class _FaoLogoPageState extends State<FaoLogoPage> {
   FaoLogoLanguage _language = FaoLogoLanguage.en;
   FaoLogoVariant _variant = FaoLogoVariant.threeLinesBlue;
+  final TextEditingController _heightController =
+      TextEditingController(text: '56');
+  final TextEditingController _widthController = TextEditingController();
+  double? _logoHeight = 56;
+  double? _logoWidth;
 
   void _onLanguageChanged(FaoLogoLanguage language) {
     setState(() => _language = language);
@@ -20,6 +25,25 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
     print('before onVariantChanged: $variant');
     setState(() => _variant = variant);
     print('after onVariantChanged: $variant');
+  }
+
+  void _applySize() {
+    final heightText = _heightController.text.trim();
+    final widthText = _widthController.text.trim();
+    final parsedHeight =
+        heightText.isEmpty ? null : double.tryParse(heightText);
+    final parsedWidth = widthText.isEmpty ? null : double.tryParse(widthText);
+    setState(() {
+      _logoHeight = parsedHeight;
+      _logoWidth = parsedWidth;
+    });
+  }
+
+  @override
+  void dispose() {
+    _heightController.dispose();
+    _widthController.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,16 +82,14 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
                   .map(
                     (v) => DropdownMenuItem<FaoLogoVariant>(
                       value: v,
-                      child: Text(
-                        switch (v) {
-                          FaoLogoVariant.threeLinesBlue => '3 lines – Blue',
-                          FaoLogoVariant.threeLinesWhite => '3 lines – White',
-                          FaoLogoVariant.threeLinesBlack => '3 lines – Black',
-                          FaoLogoVariant.shortBlue => 'Short – Blue',
-                          FaoLogoVariant.shortWhite => 'Short – White',
-                          FaoLogoVariant.shortBlack => 'Short – Black',
-                        },
-                      ),
+                      child: Text(switch (v) {
+                        FaoLogoVariant.threeLinesBlue => '3 lines – Blue',
+                        FaoLogoVariant.threeLinesWhite => '3 lines – White',
+                        FaoLogoVariant.threeLinesBlack => '3 lines – Black',
+                        FaoLogoVariant.shortBlue => 'Short – Blue',
+                        FaoLogoVariant.shortWhite => 'Short – White',
+                        FaoLogoVariant.shortBlack => 'Short – Black',
+                      }),
                     ),
                   )
                   .toList(),
@@ -75,6 +97,41 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
                 if (v == null) return;
                 _onVariantChanged(v);
               },
+            ),
+          ],
+        ),
+        const SizedBox(height: FaoSpacing.md),
+        Row(
+          children: [
+            SizedBox(
+              width: 120,
+              child: TextField(
+                controller: _heightController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(
+                  labelText: 'Height',
+                  isDense: true,
+                ),
+              ),
+            ),
+            const SizedBox(width: FaoSpacing.sm),
+            SizedBox(
+              width: 120,
+              child: TextField(
+                controller: _widthController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(
+                  labelText: 'Width',
+                  isDense: true,
+                ),
+              ),
+            ),
+            const SizedBox(width: FaoSpacing.sm),
+            ElevatedButton(
+              onPressed: _applySize,
+              child: const Text('Apply size'),
             ),
           ],
         ),
@@ -95,16 +152,14 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
             language: _language,
             variant: switch (_variant) {
               FaoLogoVariant.threeLinesBlue ||
-              FaoLogoVariant.shortBlue =>
-                FaoLogoVariant.shortBlue,
+              FaoLogoVariant.shortBlue => FaoLogoVariant.shortBlue,
               FaoLogoVariant.threeLinesWhite ||
-              FaoLogoVariant.shortWhite =>
-                FaoLogoVariant.shortWhite,
+              FaoLogoVariant.shortWhite => FaoLogoVariant.shortWhite,
               FaoLogoVariant.threeLinesBlack ||
-              FaoLogoVariant.shortBlack =>
-                FaoLogoVariant.shortBlack,
+              FaoLogoVariant.shortBlack => FaoLogoVariant.shortBlack,
             },
-            height: 56,
+            height: _logoHeight ?? 40,
+            width: _logoWidth,
           ),
         ),
         const SizedBox(height: FaoSpacing.xxl),
@@ -120,7 +175,12 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
             border: Border.all(color: Theme.of(context).colorScheme.outline),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: FaoLogo(language: _language, variant: _variant, height: 56),
+          child: FaoLogo(
+            language: _language,
+            variant: _variant,
+            height: _logoHeight ?? 56,
+            width: _logoWidth,
+          ),
         ),
         const SizedBox(height: FaoSpacing.xxl),
         Text('Dark background', style: Theme.of(context).textTheme.titleMedium),
@@ -131,7 +191,12 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
             color: FaoColors.primary,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: FaoLogo(language: _language, variant: _variant, height: 56),
+          child: FaoLogo(
+            language: _language,
+            variant: _variant,
+            height: _logoHeight ?? 56,
+            width: _logoWidth,
+          ),
         ),
         const SizedBox(height: FaoSpacing.xxl),
         Text(
