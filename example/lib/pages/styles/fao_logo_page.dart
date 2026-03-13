@@ -10,7 +10,17 @@ class FaoLogoPage extends StatefulWidget {
 
 class _FaoLogoPageState extends State<FaoLogoPage> {
   FaoLogoLanguage _language = FaoLogoLanguage.en;
-  FaoLogoVariant _variant = FaoLogoVariant.blue;
+  FaoLogoVariant _variant = FaoLogoVariant.threeLinesBlue;
+
+  void _onLanguageChanged(FaoLogoLanguage language) {
+    setState(() => _language = language);
+  }
+
+  void _onVariantChanged(FaoLogoVariant variant) {
+    print('before onVariantChanged: $variant');
+    setState(() => _variant = variant);
+    print('after onVariantChanged: $variant');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,28 +40,49 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
               value: _language,
               hint: const Text('Language'),
               items: FaoLogoLanguage.values
-                  .map((l) => DropdownMenuItem(
-                        value: l,
-                        child: Text(l.name.toUpperCase()),
-                      ))
+                  .map(
+                    (l) => DropdownMenuItem(
+                      value: l,
+                      child: Text(l.name.toUpperCase()),
+                    ),
+                  )
                   .toList(),
-              onChanged: (v) => setState(() => _language = v ?? FaoLogoLanguage.en),
+              onChanged: (v) =>
+                  setState(() => _language = v ?? FaoLogoLanguage.en),
             ),
             const SizedBox(width: FaoSpacing.md),
             DropdownButton<FaoLogoVariant>(
               value: _variant,
               hint: const Text('Variant'),
-              items: const [
-                DropdownMenuItem(value: FaoLogoVariant.blue, child: Text('Blue')),
-                DropdownMenuItem(value: FaoLogoVariant.white, child: Text('White')),
-                DropdownMenuItem(value: FaoLogoVariant.black, child: Text('Black')),
-              ],
-              onChanged: (v) => setState(() => _variant = v ?? FaoLogoVariant.blue),
+              items: FaoLogoVariant.values
+                  .map(
+                    (v) => DropdownMenuItem<FaoLogoVariant>(
+                      value: v,
+                      child: Text(
+                        switch (v) {
+                          FaoLogoVariant.threeLinesBlue => '3 lines – Blue',
+                          FaoLogoVariant.threeLinesWhite => '3 lines – White',
+                          FaoLogoVariant.threeLinesBlack => '3 lines – Black',
+                          FaoLogoVariant.shortBlue => 'Short – Blue',
+                          FaoLogoVariant.shortWhite => 'Short – White',
+                          FaoLogoVariant.shortBlack => 'Short – Black',
+                        },
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (v) {
+                if (v == null) return;
+                _onVariantChanged(v);
+              },
             ),
           ],
         ),
         const SizedBox(height: FaoSpacing.xxl),
-        Text('Light background', style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          'Short logo (uses testshort.svg)',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: FaoSpacing.md),
         Container(
           padding: const EdgeInsets.all(FaoSpacing.lg),
@@ -62,9 +93,34 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
           ),
           child: FaoLogo(
             language: _language,
-            variant: _variant,
+            variant: switch (_variant) {
+              FaoLogoVariant.threeLinesBlue ||
+              FaoLogoVariant.shortBlue =>
+                FaoLogoVariant.shortBlue,
+              FaoLogoVariant.threeLinesWhite ||
+              FaoLogoVariant.shortWhite =>
+                FaoLogoVariant.shortWhite,
+              FaoLogoVariant.threeLinesBlack ||
+              FaoLogoVariant.shortBlack =>
+                FaoLogoVariant.shortBlack,
+            },
             height: 56,
           ),
+        ),
+        const SizedBox(height: FaoSpacing.xxl),
+        Text(
+          'Light background',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: FaoSpacing.md),
+        Container(
+          padding: const EdgeInsets.all(FaoSpacing.lg),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            border: Border.all(color: Theme.of(context).colorScheme.outline),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: FaoLogo(language: _language, variant: _variant, height: 56),
         ),
         const SizedBox(height: FaoSpacing.xxl),
         Text('Dark background', style: Theme.of(context).textTheme.titleMedium),
@@ -75,14 +131,13 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
             color: FaoColors.primary,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: FaoLogo(
-            language: _language,
-            variant: FaoLogoVariant.white,
-            height: 56,
-          ),
+          child: FaoLogo(language: _language, variant: _variant, height: 56),
         ),
         const SizedBox(height: FaoSpacing.xxl),
-        Text('All languages (white)', style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          'All languages (white)',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: FaoSpacing.md),
         Container(
           padding: const EdgeInsets.all(FaoSpacing.md),
@@ -100,15 +155,15 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
                     children: [
                       FaoLogo(
                         language: lang,
-                        variant: FaoLogoVariant.white,
+                        variant: FaoLogoVariant.threeLinesWhite,
                         height: 40,
                       ),
                       const SizedBox(height: 4),
                       Text(
                         lang.name.toUpperCase(),
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Colors.white70,
-                            ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelSmall?.copyWith(color: Colors.white70),
                       ),
                     ],
                   ),
@@ -117,7 +172,10 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
           ),
         ),
         const SizedBox(height: FaoSpacing.xxl),
-        Text('All languages (black)', style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          'All languages (black)',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: FaoSpacing.md),
         Container(
           padding: const EdgeInsets.all(FaoSpacing.md),
@@ -136,7 +194,7 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
                     children: [
                       FaoLogo(
                         language: lang,
-                        variant: FaoLogoVariant.black,
+                        variant: FaoLogoVariant.threeLinesBlack,
                         height: 40,
                       ),
                       const SizedBox(height: 4),

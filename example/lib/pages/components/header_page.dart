@@ -10,7 +10,11 @@ class HeaderPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FaoHeader(
-          logo: FaoLogo(language: FaoLogoLanguage.zh, variant: FaoLogoVariant.blue, height: 36),
+          logo: FaoLogo(
+            language: FaoLogoLanguage.zh,
+            variant: FaoLogoVariant.threeLinesBlue,
+            height: 36,
+          ),
           rightActions: [
             IconButton(icon: const Icon(Icons.search), onPressed: () {}),
             IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
@@ -18,7 +22,11 @@ class HeaderPage extends StatelessWidget {
         ),
         const SizedBox(height: FaoSpacing.md),
         FaoHeader(
-          logo: FaoLogo(language: FaoLogoLanguage.zh, variant: FaoLogoVariant.blue, height: 36),
+          logo: FaoLogo(
+            language: FaoLogoLanguage.zh,
+            variant: FaoLogoVariant.threeLinesBlue,
+            height: 36,
+          ),
           subheader: FaoCustomSubHeader(
             left: FaoNavbar(
               items: [
