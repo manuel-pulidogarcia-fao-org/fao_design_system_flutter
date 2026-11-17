@@ -11,8 +11,9 @@ class FaoLogoPage extends StatefulWidget {
 class _FaoLogoPageState extends State<FaoLogoPage> {
   FaoLogoLanguage _language = FaoLogoLanguage.en;
   FaoLogoVariant _variant = FaoLogoVariant.threeLinesBlue;
-  final TextEditingController _heightController =
-      TextEditingController(text: '56');
+  final TextEditingController _heightController = TextEditingController(
+    text: '56',
+  );
   final TextEditingController _widthController = TextEditingController();
   double? _logoHeight = 56;
   double? _logoWidth;
@@ -22,16 +23,15 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
   }
 
   void _onVariantChanged(FaoLogoVariant variant) {
-    print('before onVariantChanged: $variant');
     setState(() => _variant = variant);
-    print('after onVariantChanged: $variant');
   }
 
   void _applySize() {
     final heightText = _heightController.text.trim();
     final widthText = _widthController.text.trim();
-    final parsedHeight =
-        heightText.isEmpty ? null : double.tryParse(heightText);
+    final parsedHeight = heightText.isEmpty
+        ? null
+        : double.tryParse(heightText);
     final parsedWidth = widthText.isEmpty ? null : double.tryParse(widthText);
     setState(() {
       _logoHeight = parsedHeight;
@@ -107,8 +107,9 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
               width: 120,
               child: TextField(
                 controller: _heightController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 decoration: const InputDecoration(
                   labelText: 'Height',
                   isDense: true,
@@ -120,8 +121,9 @@ class _FaoLogoPageState extends State<FaoLogoPage> {
               width: 120,
               child: TextField(
                 controller: _widthController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 decoration: const InputDecoration(
                   labelText: 'Width',
                   isDense: true,

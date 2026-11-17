@@ -1,6 +1,6 @@
 name: fao_design_system_flutter
 description: Flutter implementation of the FAO Design System - components, themes, and design tokens.
-version: 3.6.6
+version: 1.0.4
 homepage: https://github.com/FAO/fao_design_system_flutter
 
 environment:

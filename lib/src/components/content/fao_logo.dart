@@ -41,7 +41,6 @@ class FaoLogo extends StatelessWidget {
       FaoLogoVariant.shortBlack =>
         'packages/$_packageName/assets/testshort.svg',
     };
-    print('path: $path');
     return path;
   }
 
@@ -62,8 +61,9 @@ class FaoLogo extends StatelessWidget {
       height: height,
       width: width,
       fit: fit,
-      colorFilter:
-          color == null ? null : ColorFilter.mode(color, BlendMode.srcIn),
+      colorFilter: color == null
+          ? null
+          : ColorFilter.mode(color, BlendMode.srcIn),
     );
   }
 }

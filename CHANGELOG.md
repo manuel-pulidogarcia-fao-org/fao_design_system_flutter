@@ -1,3 +1,7 @@
+## 1.0.4
+
+* Remove debug print from FaoLogo asset path resolution
+
 ## 3.6.6
 
 * Initial release
